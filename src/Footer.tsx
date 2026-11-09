@@ -1,11 +1,11 @@
 
-function Footer() {
+function Footer(props: {money: number, glonks: number}) {
 
     return(
         <footer>
             <nav>
-                <p>money: $123</p>
-                <p>glonks: 23</p>
+                <p>money: ${props.money ?? 0}</p>
+                <p>glonks: {props.glonks ?? 0}</p>
             </nav>
         </footer>
     );
