@@ -1,14 +1,13 @@
+import Glonk from "./Glonk";
 
 function Field() {
 
-    const test1 = "orange"
-    let test2: number = 43;
+    let x = <Glonk name="spongebob" value={23}/>;
 
     return(
-        <ul>
-            <li>{test1}</li>
-            <li>{test2}</li>
-        </ul>
+        <div className="field">
+            <Glonk name="spongebob" value={23}/>
+        </div>
     );
 }
 

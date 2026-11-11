@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
@@ -48,7 +48,7 @@
   #social .button-icon {
     filter: invert(1) brightness(2);
   }
-}
+} */
 
 #root {
   width: 1126px;
@@ -62,11 +62,58 @@
   box-sizing: border-box;
 }
 
+header {
+  border: 2px solid brown;
+}
+
+footer {
+  border: 2px solid brown;
+}
+
+.midscreen {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sidebar {
+  width: 20rem;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid brown;
+}
+
+.shopItem {
+  font-size: 1rem;
+  line-height: 2px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid green;
+}
+
+.shopItem-image {
+  border: 1px solid black;
+  box-shadow: 2px 2px 3px;
+}
+
+.shopItem-description {
+  display: none;
+}
+
+.shopItem:hover .shopItem-description {
+  display: block;
+}
+
+.field {
+  width: 100%;
+}
+
 .glonk {
   font-size: .5rem;
   line-height: 2px;
   padding: 0;
   margin: 0;
+  border: 1px solid red;
 }
 
 .glonk img {
@@ -74,7 +121,10 @@
   box-shadow: 2px 2px 3px;
 }
 
-.card {
+
+
+
+/* .card {
   border: 1px solid black;
   border-radius: 10px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
@@ -98,7 +148,7 @@
 
 .card .cardText {
   margin: 0;
-}
+} */
 
 /* 
 body {

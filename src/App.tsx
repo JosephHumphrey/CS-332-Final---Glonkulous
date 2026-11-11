@@ -3,7 +3,8 @@ import Header from './Header.tsx'
 import Field from './Field.tsx';
 import Card from './Card.tsx';
 import Button from './Button/Button.tsx';
-import Glonks from './Glonks.tsx';
+import Glonks from './Glonk.tsx';
+import Sidebar from './Sidebar.tsx';
 
 function App() {
 
@@ -13,10 +14,10 @@ function App() {
   return(
     <>
       <Header/>
-      <Field/>
-      <Card/>
-      <Glonks name="spongebob" value={23}/>
-      <Button/>
+      <div className='midscreen'>
+        <Field/>
+        <Sidebar/>
+      </div>
       <Footer money={userMoney} glonks={numGlonks}/>
     </>
   );
