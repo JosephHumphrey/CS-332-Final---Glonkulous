@@ -1,11 +1,19 @@
+import type { FC } from 'react';
 
-export default function Glonk(props: {name: string, value: number}) {
+export type GlonkProps = {
+  id: string;          // stable identifier, used as the React key
+  name: string;
+  value: number;
+};
 
-    return(
-        <div className="glonk">
-            <p>Name: {props.name ?? null}</p>
-            <p>Value: {props.value ?? null}</p>
-            <img src="https://via.placeholder.com/50" alt="glonk" />
-        </div>
-    );
-}
+const Glonk: FC<GlonkProps> = ({ id, name, value }) => {
+  return (
+    <div className="glonk" data-id={id}>
+        <p>Name: {name ?? "null"}</p>
+        <p>Value: {value ?? 0}</p>
+        <img src="https://via.placeholder.com/50" alt="glonk" />
+    </div>
+  );
+};
+
+export default Glonk;
