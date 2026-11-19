@@ -15,7 +15,7 @@ function App() {
     <>
       <Header/>
       <div className='midscreen'>
-        <Field/>
+        <Field max_glonks={10} spawn_interval_ms={2000} glonk_min_value={5} glonk_max_value={15}/>
         <Sidebar/>
       </div>
       <Footer money={userMoney} glonks={numGlonks}/>
