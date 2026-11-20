@@ -1,24 +1,78 @@
 import Footer from './Footer.tsx';
 import Header from './Header.tsx'
 import Field from './Field.tsx';
-import Card from './Card.tsx';
-import Button from './Button/Button.tsx';
-import Glonks from './Glonk.tsx';
+import {type GlonkProps} from "./Glonk";
 import Sidebar from './Sidebar.tsx';
+import { useEffect, useState } from 'react';
+
+type GlonkData = Pick<GlonkProps, 'id' | 'name' | 'value'>;
+// Function to create the arguments to create a glonk
+function makeGlonk(min_value: number, max_value: number): GlonkData {
+  return {
+    id: crypto.randomUUID(),
+    name: "test",
+    value: RandomNumberInRange(min_value, max_value),
+  };
+}
+
+function RandomNumberInRange(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 function App() {
 
-  let userMoney: number = 50;
-  let numGlonks: number = 8;
+  const [userMoney, setUserMoney] = useState<number>(50);
+  const [glonks, setGlonks] = useState<GlonkData[]>([]);
+
+  const max_glonks = 10;
+  const spawn_interval_ms = 2000;
+  const glonk_min_value = 5;
+  const glonk_max_value = 15;
+  const glonks_spawn_min = 1;
+  const glonks_spawn_max = 3;
+
+  // Callback to handle clicks from Field
+  const handleGlonkClick = (clickedGlonk: GlonkData) => {
+    setUserMoney((prevMoney) => prevMoney + clickedGlonk.value);
+    setGlonks((prev) => prev.filter((g) => g.id !== clickedGlonk.id));
+  };
+
+  const addGlonk = (count: number) => {
+        setGlonks((prev) => {
+            // Check how many more glonks can be added without exeeding the limit
+            const room = max_glonks - prev.length;
+            if (room <= 0) return prev;
+
+            // add the number of glonks provided or as many as can be without exeeding the limit
+            const n = Math.min(count, room);
+            const batch = Array.from( {length: n }, () => makeGlonk(glonk_min_value, glonk_max_value));
+
+            return [...prev, ...batch]
+        });
+    };
+
+    // const removeGlonk = (id: string) => {
+    //     setGlonks((prev) => prev.filter((g) => g.id !== id));
+    // };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const batchSize = RandomNumberInRange(glonks_spawn_min, glonks_spawn_max);
+            addGlonk(batchSize);
+        }, spawn_interval_ms);
+        return () => clearInterval(interval);
+    }, []);
+
   
   return(
     <>
       <Header/>
       <div className='midscreen'>
-        <Field max_glonks={10} spawn_interval_ms={2000} glonk_min_value={5} glonk_max_value={15} glonks_spawn_min={1} glonks_spawn_max={3}/>
+        <Field glonks={glonks}
+                onGlonkClick={handleGlonkClick}/>
         <Sidebar/>
       </div>
-      <Footer money={userMoney} glonks={numGlonks}/>
+      <Footer money={userMoney} glonks={glonks.length}/>
     </>
   );
 }
