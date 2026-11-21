@@ -4,7 +4,9 @@ import Field from './Field.tsx';
 import {type GlonkProps} from "./Glonk";
 import Sidebar from './Sidebar.tsx';
 import { useEffect, useState } from 'react';
+import {type ShopItemData} from "./Sidebar.tsx";
 
+// type ShopItemData = Pick<ShopItemProps, 'id' | 'name' | 'cost' | 'description' | 'icon'>;
 type GlonkData = Pick<GlonkProps, 'id' | 'name' | 'value'>;
 // Function to create the arguments to create a glonk
 function makeGlonk(min_value: number, max_value: number): GlonkData {
@@ -21,25 +23,32 @@ function RandomNumberInRange(min: number, max: number) {
 
 function App() {
 
-  const [userMoney, setUserMoney] = useState<number>(50);
+  const [userMoney, setUserMoney] = useState<number>(0);
   const [glonks, setGlonks] = useState<GlonkData[]>([]);
 
   const max_glonks = 20;
-  const spawn_interval_ms = 5000;
+  const spawn_interval_ms = 1000;
   const glonk_min_value = 1;
   const glonk_max_value = 5;
   const glonks_spawn_min = 1;
   const glonks_spawn_max = 1;
 
-  // Handle buying an item
-  const handleBuy = (cost: number, itemName: string) => {
-    if (userMoney >= cost) {
-      setUserMoney(prev => prev - cost);
-      console.log(`Bought ${itemName}. Remaining money: ${userMoney - cost}`);
 
-      switch(itemName) {
-        case "upgrade1": {
-          // do whatever
+  const [availableItems, setAvailableItems] = useState<ShopItemData[]>([
+    { id: 1, name: "test", cost: 12, description: "lorem ipsum", icon: "" },
+    { id: 2, name: "upgrade", cost: 3, description: "hello", icon: "" },
+  ]);
+
+  // Handle buying an item
+  const handleBuy = (item: typeof availableItems[0]) => {
+    if (userMoney >= item.cost) {
+      setUserMoney(prev => prev - item.cost);
+      setAvailableItems(prev => prev.filter(i => i.id !== item.id));
+      console.log(`Bought ${item.name}. Remaining money: ${userMoney - item.cost}`);
+
+      switch(item.id) {
+        case 1: {
+          // do whatever the upgrade should do
           break;
         }
       }
@@ -88,7 +97,7 @@ function App() {
       <div className='midscreen'>
         <Field glonks={glonks}
                 onGlonkClick={handleGlonkClick}/>
-        <Sidebar onBuy={handleBuy}/>
+        <Sidebar items={availableItems} onBuy={handleBuy}/>
       </div>
       <Footer money={userMoney} glonks={glonks.length}/>
     </>

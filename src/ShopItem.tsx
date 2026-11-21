@@ -1,15 +1,18 @@
-type ShopItemProps = {
+export type ShopItemProps = {
+  id: number
   icon: string;
   name: string;
   cost: number;
   description: string;
-  onBuy: (cost: number, name: string) => void;
+  onBuy: (item: ShopItemData) => void;
 };
 
-function ShopItem({ icon, name, cost, description, onBuy }: ShopItemProps) {
+export type ShopItemData = Pick<ShopItemProps, 'id' | 'name' | 'cost' | 'description' | 'icon'>;
+
+function ShopItem({ id, icon, name, cost, description, onBuy }: ShopItemProps) {
 
     const handleClick = () => {
-        onBuy(cost, name);
+        onBuy({id, icon, name, cost, description});
     };
 
     return(
