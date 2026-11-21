@@ -24,12 +24,30 @@ function App() {
   const [userMoney, setUserMoney] = useState<number>(50);
   const [glonks, setGlonks] = useState<GlonkData[]>([]);
 
-  const max_glonks = 10;
-  const spawn_interval_ms = 2000;
-  const glonk_min_value = 5;
-  const glonk_max_value = 15;
+  const max_glonks = 20;
+  const spawn_interval_ms = 5000;
+  const glonk_min_value = 1;
+  const glonk_max_value = 5;
   const glonks_spawn_min = 1;
-  const glonks_spawn_max = 3;
+  const glonks_spawn_max = 1;
+
+  // Handle buying an item
+  const handleBuy = (cost: number, itemName: string) => {
+    if (userMoney >= cost) {
+      setUserMoney(prev => prev - cost);
+      console.log(`Bought ${itemName}. Remaining money: ${userMoney - cost}`);
+
+      switch(itemName) {
+        case "upgrade1": {
+          // do whatever
+          break;
+        }
+      }
+
+    } else {
+      console.log("Not enough money!");
+    }
+  };
 
   // Callback to handle clicks from Field
   const handleGlonkClick = (clickedGlonk: GlonkData) => {
@@ -70,7 +88,7 @@ function App() {
       <div className='midscreen'>
         <Field glonks={glonks}
                 onGlonkClick={handleGlonkClick}/>
-        <Sidebar/>
+        <Sidebar onBuy={handleBuy}/>
       </div>
       <Footer money={userMoney} glonks={glonks.length}/>
     </>
