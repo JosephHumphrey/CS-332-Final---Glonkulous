@@ -4,7 +4,7 @@ import Field from './Field.tsx';
 import {type GlonkProps} from "./Glonk";
 import Sidebar from './Sidebar.tsx';
 import { useEffect, useState } from 'react';
-import {type ShopItemData} from "./Sidebar.tsx";
+import {type ShopItemData} from "./ShopItem.tsx";
 
 // type ShopItemData = Pick<ShopItemProps, 'id' | 'name' | 'cost' | 'description' | 'icon'>;
 type GlonkData = Pick<GlonkProps, 'id' | 'name' | 'value'>;
@@ -33,7 +33,7 @@ function App() {
   const glonks_spawn_min = 1;
   const glonks_spawn_max = 1;
 
-
+  // Handle Shop
   const [availableItems, setAvailableItems] = useState<ShopItemData[]>([
     { id: 1, name: "test", cost: 12, description: "lorem ipsum", icon: "" },
     { id: 2, name: "upgrade", cost: 3, description: "hello", icon: "" },
@@ -58,6 +58,8 @@ function App() {
     }
   };
 
+
+  // Handle Field / Glonks
   // Callback to handle clicks from Field
   const handleGlonkClick = (clickedGlonk: GlonkData) => {
     setUserMoney((prevMoney) => prevMoney + clickedGlonk.value);
@@ -78,19 +80,18 @@ function App() {
         });
     };
 
-    // const removeGlonk = (id: string) => {
-    //     setGlonks((prev) => prev.filter((g) => g.id !== id));
-    // };
+  // const removeGlonk = (id: string) => {
+  //     setGlonks((prev) => prev.filter((g) => g.id !== id));
+  // };
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const batchSize = RandomNumberInRange(glonks_spawn_min, glonks_spawn_max);
-            addGlonk(batchSize);
-        }, spawn_interval_ms);
-        return () => clearInterval(interval);
-    }, []);
+  useEffect(() => {
+      const interval = setInterval(() => {
+          const batchSize = RandomNumberInRange(glonks_spawn_min, glonks_spawn_max);
+          addGlonk(batchSize);
+      }, spawn_interval_ms);
+      return () => clearInterval(interval);
+  }, []);
 
-  
   return(
     <>
       <Header/>
