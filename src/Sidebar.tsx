@@ -1,3 +1,4 @@
+import styles from './Styles/Sidebar.module.css'
 import ShopItem, {type ShopItemData} from "./ShopItem";
 
 type OnBuyHandler = (item: ShopItemData) => void;
@@ -5,7 +6,7 @@ type OnBuyHandler = (item: ShopItemData) => void;
 function Sidebar({items, onBuy}: { items: ShopItemData[], onBuy: OnBuyHandler }) {
 
     return(
-        <div className="sidebar">
+        <div className={styles.Sidebar}>
             <h1>Shop</h1>
             <div>
                 {items.map((i) => (

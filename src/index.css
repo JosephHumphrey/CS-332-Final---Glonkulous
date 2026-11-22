@@ -75,35 +75,6 @@ footer {
   justify-content: flex-end;
 }
 
-.sidebar {
-  width: 20rem;
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  border: 2px solid brown;
-}
-
-.shopItem {
-  font-size: 1rem;
-  line-height: 2px;
-  padding: 0;
-  margin: 0;
-  border: 1px solid green;
-}
-
-.shopItem-image {
-  border: 1px solid black;
-  box-shadow: 2px 2px 3px;
-}
-
-.shopItem-description {
-  display: none;
-}
-
-.shopItem:hover .shopItem-description {
-  display: block;
-}
-
 .field {
   width: 100%;
 }
