@@ -23,20 +23,22 @@ function RandomNumberInRange(min: number, max: number) {
 
 function App() {
 
-  const [userMoney, setUserMoney] = useState<number>(0);
+  const [userMoney, setUserMoney] = useState<number>(5000);
   const [glonks, setGlonks] = useState<GlonkData[]>([]);
 
   const max_glonks = 20;
-  const spawn_interval_ms = 1000;
-  const glonk_min_value = 1;
-  const glonk_max_value = 5;
-  const glonks_spawn_min = 1;
-  const glonks_spawn_max = 1;
+  let spawn_interval_ms = 8000;
+  let glonk_min_value = 1;
+  let glonk_max_value = 5;
+  let glonks_spawn_min = 1;
+  let glonks_spawn_max = 1;
 
   // Handle Shop
   const [availableItems, setAvailableItems] = useState<ShopItemData[]>([
-    { id: 1, name: "test", cost: 12, description: "lorem ipsum", icon: "" },
-    { id: 2, name: "upgrade", cost: 3, description: "hello", icon: "" },
+    { id: 1, name: "Spawn Rate 1", cost: 15, description: "Glonks now spawn every 3 seconds", icon: "" },
+    { id: 2, name: "Spawn Quantity 1", cost: 30, description: "Up to 3 glonks can now spawn at a time", icon: "" },
+    { id: 3, name: "Spawn Rate 2", cost: 50, description: "Glonks now spawn every second", icon: "" },
+    { id: 4, name: "Spawn Quantity 2", cost: 80, description: "Up to 5 glonks can now spawn at a time", icon: "" },
   ]);
 
   // Handle buying an item
@@ -44,11 +46,24 @@ function App() {
     if (userMoney >= item.cost) {
       setUserMoney(prev => prev - item.cost);
       setAvailableItems(prev => prev.filter(i => i.id !== item.id));
-      console.log(`Bought ${item.name}. Remaining money: ${userMoney - item.cost}`);
+      console.log(`Bought ${item.name} id: ${item.id}. Remaining money: ${userMoney - item.cost}`);
 
-      switch(item.id) {
+      switch(item.id) { //❗changes not taking effect for some reason
         case 1: {
-          // do whatever the upgrade should do
+          spawn_interval_ms = 3000;
+          break;
+        }
+        case 2: {
+          glonks_spawn_max = 3;
+          break;
+        }
+        case 3: {
+          spawn_interval_ms = 1000;
+          break;
+        }
+        case 4: {
+          glonks_spawn_min = 2;
+          glonks_spawn_max = 5;
           break;
         }
       }
@@ -58,7 +73,6 @@ function App() {
     }
   };
 
-
   // Handle Field / Glonks
   // Callback to handle clicks from Field
   const handleGlonkClick = (clickedGlonk: GlonkData) => {
@@ -67,29 +81,29 @@ function App() {
   };
 
   const addGlonk = (count: number) => {
-        setGlonks((prev) => {
-            // Check how many more glonks can be added without exeeding the limit
-            const room = max_glonks - prev.length;
-            if (room <= 0) return prev;
+    setGlonks((prev) => {
+      // Check how many more glonks can be added without exeeding the limit
+      const room = max_glonks - prev.length;
+      if (room <= 0) return prev;
 
-            // add the number of glonks provided or as many as can be without exeeding the limit
-            const n = Math.min(count, room);
-            const batch = Array.from( {length: n }, () => makeGlonk(glonk_min_value, glonk_max_value));
+      // add the number of glonks provided or as many as can be without exeeding the limit
+      const n = Math.min(count, room);
+      const batch = Array.from( {length: n }, () => makeGlonk(glonk_min_value, glonk_max_value));
 
-            return [...prev, ...batch]
-        });
-    };
+      return [...prev, ...batch]
+    });
+  };
 
   // const removeGlonk = (id: string) => {
   //     setGlonks((prev) => prev.filter((g) => g.id !== id));
   // };
 
   useEffect(() => {
-      const interval = setInterval(() => {
-          const batchSize = RandomNumberInRange(glonks_spawn_min, glonks_spawn_max);
-          addGlonk(batchSize);
-      }, spawn_interval_ms);
-      return () => clearInterval(interval);
+    const interval = setInterval(() => {
+        const batchSize = RandomNumberInRange(glonks_spawn_min, glonks_spawn_max);
+        addGlonk(batchSize);
+    }, spawn_interval_ms);
+    return () => clearInterval(interval);
   }, []);
 
   return(
