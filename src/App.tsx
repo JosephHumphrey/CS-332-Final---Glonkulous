@@ -1,5 +1,8 @@
+
+import { useState } from 'react';
+
 import Footer from './Footer.tsx';
-import Header from './Header.tsx'
+import Header from './Header.tsx';
 import Field from './Field.tsx';
 import {type GlonkProps} from "./Glonk";
 import Sidebar from './Sidebar.tsx';
@@ -109,6 +112,7 @@ function App() {
   return(
     <>
       <Header/>
+
       <div className='midscreen'>
         <Field glonks={glonks}
                 onGlonkClick={handleGlonkClick}/>
@@ -119,4 +123,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

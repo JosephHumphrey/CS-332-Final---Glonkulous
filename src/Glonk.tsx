@@ -16,7 +16,7 @@ const Glonk: FC<GlonkProps> = ({ id, name, value, onClick }) => {
             onClick={() => onClick && onClick({ id, name, value })}>
         <p>Name: {name ?? "null"}</p>
         <p>Value: {value ?? 0}</p>
-        <img src="https://via.placeholder.com/50" alt="glonk" />
+        <img src="/Glonk.png" alt="glonk" />
     </div>
   );
 };

@@ -64,6 +64,7 @@
 
 header {
   border: 2px solid brown;
+  height: 5rem;
 }
 
 footer {
@@ -71,25 +72,37 @@ footer {
 }
 
 .midscreen {
+  border: 2px solid green;
   display: flex;
   justify-content: flex-end;
+  height: 30rem;
+  width: auto;
 }
 
 .field {
+  border: 2px solid blue;
   width: 100%;
+  height: 500px;
+  position: relative;
+  overflow: hidden;
 }
 
 .glonk {
+  position: absolute;
+  width: 48px;
+  height: 68px;
+  box-sizing: border-box;
   font-size: .5rem;
   line-height: 2px;
   padding: 0;
   margin: 0;
-  border: 1px solid red;
+  cursor: pointer;
+  user-select: none;
 }
 
 .glonk img {
-  border: 1px solid black;
-  box-shadow: 2px 2px 3px;
+  width: auto;
+  height: auto;
 }
 
 
