@@ -3,7 +3,7 @@ function Header() {
 
     return(
         <header>
-            <h1>final project</h1>
+            <h1>Glonkulous</h1>
             <nav>
                 <ul>
                     <li>menu</li>

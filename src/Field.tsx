@@ -2,14 +2,17 @@
 import { useEffect, useRef, useState } from "react";
 import Glonk from "./Glonk";
 import type { GlonkData } from "./Glonk";
+import type { MouseEvent } from "react";
 
 interface FieldProps {
     glonks: GlonkData[];
-    onGlonkClick: (id: number, shiftKey: boolean) => void;
+    onGlonkClick: (glonk: GlonkData, shiftKey: boolean) => void;
+    onClick: (glonkIds: string[]) => void;
+    sellRadius: number;
 }
 
 interface GlonkPosition {
-    id: number;
+    id: string;
     x: number;
     y: number;
     vx: number;
@@ -48,8 +51,8 @@ function Field(props: FieldProps) {
 
             return {
                 id: glonk.id,
-                x: Math.random() * Math.max(0, width - 120),
-                y: Math.random() * Math.max(0, height - 100),
+                x: Math.random() * Math.max(0, width - 48),
+                y: Math.random() * Math.max(0, height - 68),
                 vx: Math.cos(angle),
                 vy: Math.sin(angle)
             };
@@ -93,8 +96,8 @@ function Field(props: FieldProps) {
                     x = 0;
                     vx = Math.abs(vx);
                 }
-                else if (x >= width - 120) {
-                    x = Math.max(0, width - 120);
+                else if (x >= width - 48) {
+                    x = Math.max(0, width - 48);
                     vx = -Math.abs(vx);
                 }
 
@@ -103,8 +106,8 @@ function Field(props: FieldProps) {
                     y = 0;
                     vy = Math.abs(vy);
                 }
-                else if (y >= height - 100) {
-                    y = Math.max(0, height - 100);
+                else if (y >= height - 68) {
+                    y = Math.max(0, height - 68);
                     vy = -Math.abs(vy);
                 }
 
@@ -123,8 +126,28 @@ function Field(props: FieldProps) {
 
     }, []);
 
+    // Tell radius selling when the field is clicked
+    const handleFieldClick = (event: MouseEvent<HTMLDivElement>) => {
+        // Don't radius-sell if Shift is being held
+        if (event.shiftKey) return;
+        const rect = fieldRef.current?.getBoundingClientRect();
+        if (!rect) return;
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+        const glonksInRadius = positionsRef.current.filter(p => {
+            const dx = p.x - mouseX;
+            const dy = p.y - mouseY;
+            return dx*dx + dy*dy <= props.sellRadius*props.sellRadius;
+        });
+        props.onClick(glonksInRadius.map(p => p.id));
+    };
+    
     return(
-        <div className="field" ref={fieldRef}>
+        <div 
+            className="field" 
+            ref={fieldRef}
+            onClick={handleFieldClick}>
+
             {props.glonks.map(glonk => {
 
                 const position = positions.find(

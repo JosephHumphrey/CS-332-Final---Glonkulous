@@ -81,10 +81,12 @@ footer {
 
 .field {
   border: 2px solid blue;
+  box-sizing: border-box;
   width: 100%;
   height: 500px;
   position: relative;
   overflow: hidden;
+  background-image: url("/FieldBG.png");
 }
 
 .glonk {
@@ -101,8 +103,10 @@ footer {
 }
 
 .glonk img {
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 

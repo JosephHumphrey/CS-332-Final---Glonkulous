@@ -1,22 +1,22 @@
 
-import { useState } from 'react';
-
 import Footer from './Footer.tsx';
 import Header from './Header.tsx';
 import Field from './Field.tsx';
-import {type GlonkProps} from "./Glonk";
 import Sidebar from './Sidebar.tsx';
 import { useEffect, useState } from 'react';
 import {type ShopItemData} from "./ShopItem.tsx";
+import type { GlonkData } from "./Glonk";
 
 // type ShopItemData = Pick<ShopItemProps, 'id' | 'name' | 'cost' | 'description' | 'icon'>;
-type GlonkData = Pick<GlonkProps, 'id' | 'name' | 'value'>;
+// type GlonkData = Pick<GlonkProps, 'id' | 'name' | 'value'>;
 // Function to create the arguments to create a glonk
 function makeGlonk(min_value: number, max_value: number): GlonkData {
   return {
     id: crypto.randomUUID(),
     name: "test",
     value: RandomNumberInRange(min_value, max_value),
+    x: RandomNumberInRange(0, 500),
+    y: RandomNumberInRange(0, 300),
   };
 }
 
@@ -30,11 +30,12 @@ function App() {
   const [glonks, setGlonks] = useState<GlonkData[]>([]);
 
   const max_glonks = 20;
-  let spawn_interval_ms = 8000;
-  let glonk_min_value = 1;
-  let glonk_max_value = 5;
-  let glonks_spawn_min = 1;
-  let glonks_spawn_max = 1;
+  const [spawnInterval, setSpawnInterval] = useState(8000);
+  const [glonkMinValue] = useState(1);
+  const [glonkMaxValue] = useState(5);
+  const [glonksSpawnMin, setGlonksSpawnMin] = useState(1);
+  const [glonksSpawnMax, setGlonksSpawnMax] = useState(1);
+  const [sellRadius, setSellRadius] = useState(0);
 
   // Handle Shop
   const [availableItems, setAvailableItems] = useState<ShopItemData[]>([
@@ -42,6 +43,7 @@ function App() {
     { id: 2, name: "Spawn Quantity 1", cost: 30, description: "Up to 3 glonks can now spawn at a time", icon: "" },
     { id: 3, name: "Spawn Rate 2", cost: 50, description: "Glonks now spawn every second", icon: "" },
     { id: 4, name: "Spawn Quantity 2", cost: 80, description: "Up to 5 glonks can now spawn at a time", icon: "" },
+    { id: 5, name: "Sell Area 1", cost: 100, description: "Sell all glonks in an area", icon: ""},
   ]);
 
   // Handle buying an item
@@ -51,24 +53,23 @@ function App() {
       setAvailableItems(prev => prev.filter(i => i.id !== item.id));
       console.log(`Bought ${item.name} id: ${item.id}. Remaining money: ${userMoney - item.cost}`);
 
-      switch(item.id) { //❗changes not taking effect for some reason
-        case 1: {
-          spawn_interval_ms = 3000;
+      switch(item.id) {
+        case 1:
+          setSpawnInterval(3000);
           break;
-        }
-        case 2: {
-          glonks_spawn_max = 3;
+        case 2:
+          setGlonksSpawnMax(3);
           break;
-        }
-        case 3: {
-          spawn_interval_ms = 1000;
+        case 3:
+          setSpawnInterval(1000);
           break;
-        }
-        case 4: {
-          glonks_spawn_min = 2;
-          glonks_spawn_max = 5;
+        case 4:
+          setGlonksSpawnMin(2);
+          setGlonksSpawnMax(5);
           break;
-        }
+        case 5:
+          setSellRadius(100);
+          break;
       }
 
     } else {
@@ -78,9 +79,33 @@ function App() {
 
   // Handle Field / Glonks
   // Callback to handle clicks from Field
-  const handleGlonkClick = (clickedGlonk: GlonkData) => {
-    setUserMoney((prevMoney) => prevMoney + clickedGlonk.value);
-    setGlonks((prev) => prev.filter((g) => g.id !== clickedGlonk.id));
+  const handleGlonkClick = (
+    clickedGlonk: GlonkData,
+    shiftKey: boolean
+  ) => {
+    if (shiftKey) {
+        addGlonk(1);
+    } else {
+        sellGlonk(clickedGlonk);
+    }
+  };
+
+  //Sells the glonk
+  const sellGlonk = (glonk: GlonkData) => {
+    setUserMoney(prev => prev + glonk.value);
+
+    setGlonks(prev =>
+        prev.filter(g => g.id !== glonk.id)
+    );
+  };
+
+  const sellInRadius = (glonkIds: string[]) => {
+    glonkIds.forEach(id => {
+      const glonk = glonks.find(g => g.id === id);
+      if (glonk) {
+        sellGlonk(glonk);
+      }
+    });
   };
 
   const addGlonk = (count: number) => {
@@ -91,7 +116,7 @@ function App() {
 
       // add the number of glonks provided or as many as can be without exeeding the limit
       const n = Math.min(count, room);
-      const batch = Array.from( {length: n }, () => makeGlonk(glonk_min_value, glonk_max_value));
+      const batch = Array.from( {length: n }, () => makeGlonk(glonkMinValue, glonkMaxValue));
 
       return [...prev, ...batch]
     });
@@ -103,11 +128,14 @@ function App() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-        const batchSize = RandomNumberInRange(glonks_spawn_min, glonks_spawn_max);
+        const batchSize = RandomNumberInRange(
+            glonksSpawnMin,
+            glonksSpawnMax
+        );
         addGlonk(batchSize);
-    }, spawn_interval_ms);
+    }, spawnInterval);
     return () => clearInterval(interval);
-  }, []);
+  }, [spawnInterval, glonksSpawnMin, glonksSpawnMax]);
 
   return(
     <>
@@ -115,7 +143,9 @@ function App() {
 
       <div className='midscreen'>
         <Field glonks={glonks}
-                onGlonkClick={handleGlonkClick}/>
+                onGlonkClick={handleGlonkClick}
+                onClick={sellInRadius}
+                sellRadius={sellRadius}/>
         <Sidebar items={availableItems} onBuy={handleBuy}/>
       </div>
       <Footer money={userMoney} glonks={glonks.length}/>
