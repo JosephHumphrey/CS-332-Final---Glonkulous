@@ -8,7 +8,7 @@ function Sidebar({items, onBuy}: { items: ShopItemData[], onBuy: OnBuyHandler })
     return(
         <div className={styles.Sidebar}>
             <h1>Shop</h1>
-            <div>
+            <div className={styles.ShopGrid}>
                 {items.map((i) => (
                     <ShopItem
                         id={i.id}

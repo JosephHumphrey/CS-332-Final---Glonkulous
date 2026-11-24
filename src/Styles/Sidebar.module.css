@@ -1,34 +1,60 @@
 .sidebar {
   width: 20rem;
-  text-align: right;
+  /* text-align: right; */
   display: flex;
   flex-direction: column;
   border: 2px solid brown;
 }
 
+.ShopGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
 .shopItem {
-  font-size: 1rem;
-  line-height: 2px;
-  padding: 0;
-  margin: 0;
+  position: relative;
   border: 1px solid green;
+  padding: 1rem;
+  margin: 0;
+  transition: box-shadow 0.2s;
+}
+
+.shopItem:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .shopItemIcon {
+  display: block;
+  margin: 0 auto 0.5rem;
   border: 1px solid black;
-  box-shadow: 2px 2px 3px;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .shopItemName {
-
+  font-weight: bold;
+  margin: 0.5rem 0;
 }
 
 .shopItemCost {
-  
+  color: #2e7d32;
+  font-weight: bold;
 }
 
 .shopItemDescription {
   display: none;
+  position: absolute;
+  top: 55%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  margin-top: 0.5rem;
 }
 
 .shopItem:hover .shopItemDescription {
