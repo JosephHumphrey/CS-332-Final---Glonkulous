@@ -39,11 +39,11 @@ function App() {
 
   // Handle Shop
   const [availableItems, setAvailableItems] = useState<ShopItemData[]>([
-    { id: 1, name: "Spawn Rate 1", cost: 15, description: "Glonks now spawn every 3 seconds", icon: "" },
-    { id: 2, name: "Spawn Quantity 1", cost: 30, description: "Up to 3 glonks can now spawn at a time", icon: "" },
-    { id: 3, name: "Spawn Rate 2", cost: 50, description: "Glonks now spawn every second", icon: "" },
-    { id: 4, name: "Spawn Quantity 2", cost: 80, description: "Up to 5 glonks can now spawn at a time", icon: "" },
-    { id: 5, name: "Sell Area 1", cost: 100, description: "Sell all glonks in an area", icon: ""},
+    { id: 1, name: "Spawn Rate 1", cost: 15, description: "Glonks now spawn every 3 seconds"},
+    { id: 2, name: "Spawn Quantity 1", cost: 30, description: "Up to 3 glonks can now spawn at a time"},
+    { id: 3, name: "Spawn Rate 2", cost: 50, description: "Glonks now spawn every second"},
+    { id: 4, name: "Spawn Quantity 2", cost: 80, description: "Up to 5 glonks can now spawn at a time"},
+    { id: 5, name: "Sell Area 1", cost: 100, description: "Sell all glonks in an area"},
   ]);
 
   // Handle buying an item

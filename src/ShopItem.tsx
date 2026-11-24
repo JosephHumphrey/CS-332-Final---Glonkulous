@@ -1,19 +1,18 @@
 import styles from './Styles/Sidebar.module.css'
 export type ShopItemProps = {
   id: number
-  icon: string;
   name: string;
   cost: number;
   description: string;
   onBuy: (item: ShopItemData) => void;
 };
 
-export type ShopItemData = Pick<ShopItemProps, 'id' | 'name' | 'cost' | 'description' | 'icon'>;
+export type ShopItemData = Pick<ShopItemProps, 'id' | 'name' | 'cost' | 'description'>;
 
-function ShopItem({ id, icon, name, cost, description, onBuy }: ShopItemProps) {
+function ShopItem({ id, name, cost, description, onBuy }: ShopItemProps) {
 
     const handleClick = () => {
-        onBuy({id, icon, name, cost, description});
+        onBuy({id, name, cost, description});
     };
 
     return(

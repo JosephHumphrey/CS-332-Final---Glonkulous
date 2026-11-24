@@ -12,7 +12,6 @@ function Sidebar({items, onBuy}: { items: ShopItemData[], onBuy: OnBuyHandler })
                 {items.map((i) => (
                     <ShopItem
                         id={i.id}
-                        icon={i.icon}
                         name={i.name}
                         cost={i.cost}
                         description={i.description}
