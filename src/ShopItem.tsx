@@ -5,16 +5,15 @@ export type ShopItemProps = {
   cost: number;
   description: string;
   buyable: boolean;
-  nextID: number;
   onBuy: (item: ShopItemData) => void;
 };
 
-export type ShopItemData = Pick<ShopItemProps, 'id' | 'name' | 'cost' | 'description' | 'buyable' | 'nextID'>;
+export type ShopItemData = Pick<ShopItemProps, 'id' | 'name' | 'cost' | 'description' | 'buyable'>;
 
-function ShopItem({ id, name, cost, description, buyable, nextID, onBuy }: ShopItemProps) {
+function ShopItem({ id, name, cost, description, buyable, onBuy }: ShopItemProps) {
 
     const handleClick = () => {
-        onBuy({id, name, cost, description, buyable, nextID});
+        onBuy({id, name, cost, description, buyable});
     };
 
     return(
