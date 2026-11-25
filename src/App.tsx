@@ -26,10 +26,10 @@ function RandomNumberInRange(min: number, max: number) {
 
 function App() {
 
-  const [userMoney, setUserMoney] = useState<number>(5000);
+  const [userMoney, setUserMoney] = useState<number>(0);
   const [glonks, setGlonks] = useState<GlonkData[]>([]);
 
-  const max_glonks = 20;
+  const max_glonks = 100;
   const [spawnInterval, setSpawnInterval] = useState(8000);
   const [glonkMinValue] = useState(1);
   const [glonkMaxValue] = useState(5);
