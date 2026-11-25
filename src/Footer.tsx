@@ -4,8 +4,8 @@ function Footer(props: {money: number, glonks: number}) {
     return(
         <footer>
             <nav>
-                <p>money: ${props.money ?? 0}</p>
-                <p>glonks: {props.glonks ?? 0}</p>
+                <p>Money: ${props.money ?? 0}</p>
+                <p>Glonks: {props.glonks ?? 0}</p>
             </nav>
         </footer>
     );
