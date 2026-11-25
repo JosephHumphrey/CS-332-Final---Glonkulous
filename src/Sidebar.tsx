@@ -26,7 +26,9 @@ function Sidebar({items, onBuy}: { items: ShopItemData[], onBuy: OnBuyHandler })
                             name={i.name}
                             cost={i.cost}
                             description={i.description}
-                            onBuy={onBuy}/>)
+                            onBuy={onBuy}
+                            buyable={true}/>
+                            )
                     }
                     
                     return null;
