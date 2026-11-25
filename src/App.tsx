@@ -39,11 +39,12 @@ function App() {
 
   // Handle Shop
   const [availableItems, setAvailableItems] = useState<ShopItemData[]>([
-    { id: 1, name: "Spawn Rate 1", cost: 15, description: "Glonks now spawn every 3 seconds"},
-    { id: 2, name: "Spawn Quantity 1", cost: 30, description: "Up to 3 glonks can now spawn at a time"},
-    { id: 3, name: "Spawn Rate 2", cost: 50, description: "Glonks now spawn every second"},
-    { id: 4, name: "Spawn Quantity 2", cost: 80, description: "Up to 5 glonks can now spawn at a time"},
-    { id: 5, name: "Sell Area 1", cost: 100, description: "Sell all glonks in an area"},
+    { id: 1, name: "Spawn Rate 1", cost: 15, description: "Glonks now spawn every 3 seconds", buyable: true, nextID: 3},
+    { id: 2, name: "Spawn Quantity 1", cost: 30, description: "Up to 3 glonks can now spawn at a time", buyable: true, nextID: 4},
+    { id: 3, name: "Spawn Rate 2", cost: 50, description: "Glonks now spawn every second", buyable: false, nextID: -1},
+    { id: 4, name: "Spawn Quantity 2", cost: 80, description: "Up to 5 glonks can now spawn at a time", buyable: false, nextID: -1},
+    { id: 5, name: "Sell Area 1", cost: 100, description: "Sell all glonks in an area", buyable: true, nextID: 6},
+    { id: 6, name: "Sell Area 2", cost: 150, description: "Sell all in a larger area", buyable: false, nextID: -1}
   ]);
 
   // Handle buying an item
@@ -56,9 +57,11 @@ function App() {
       switch(item.id) {
         case 1:
           setSpawnInterval(3000);
+          unlockNext(item.nextID);
           break;
         case 2:
           setGlonksSpawnMax(3);
+          unlockNext(item.nextID);
           break;
         case 3:
           setSpawnInterval(1000);
@@ -69,6 +72,10 @@ function App() {
           break;
         case 5:
           setSellRadius(100);
+          unlockNext(item.nextID);
+          break;
+        case 6:
+          setSellRadius(150);
           break;
       }
 
@@ -76,6 +83,13 @@ function App() {
       console.log("Not enough money!");
     }
   };
+
+  //Unlocks next upgrade in the shop
+  function unlockNext(nextID: number) {
+    setAvailableItems(prev =>
+      prev.map(item => item.id === nextID ? {...item, buyable: true} : item)
+    );
+  }
 
   // Handle Field / Glonks
   // Callback to handle clicks from Field

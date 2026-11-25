@@ -4,15 +4,17 @@ export type ShopItemProps = {
   name: string;
   cost: number;
   description: string;
+  buyable: boolean;
+  nextID: number;
   onBuy: (item: ShopItemData) => void;
 };
 
-export type ShopItemData = Pick<ShopItemProps, 'id' | 'name' | 'cost' | 'description'>;
+export type ShopItemData = Pick<ShopItemProps, 'id' | 'name' | 'cost' | 'description' | 'buyable' | 'nextID'>;
 
-function ShopItem({ id, name, cost, description, onBuy }: ShopItemProps) {
+function ShopItem({ id, name, cost, description, buyable, nextID, onBuy }: ShopItemProps) {
 
     const handleClick = () => {
-        onBuy({id, name, cost, description});
+        onBuy({id, name, cost, description, buyable, nextID});
     };
 
     return(
